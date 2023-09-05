@@ -1,0 +1,74 @@
+{% extends 'main.html' %} {% block content %}
+<section>
+  
+  <div class="container">
+    <div class="bname">{{ vehicle.name }} | ({{ vehicle.vehicle_number }})</div>
+    <div class="row schedule">
+      <div class="col">Departure <b>{{ vehicle.departure }}</b> | {{ vehicle.source }} | {{vehicle.date}}</div>
+
+      <div class="col">Duration <b>3:5 hrs</b></div>
+      <div class="col">Arrival <b>{{ vehicle.arrival }}</b> | {{ vehicle.destination }} | <b>{{vehicle.arrive}}</b></div>
+    </div>
+
+
+    <div id="formContainer">
+      <form action="#" id="myForm" method="POST">
+        {% csrf_token %}
+        
+        <span>Passenger Details</span>
+        <div class="details row">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>
+          {% for name in names %}
+          <div class="col-md-3">
+                {{ name }} <br>
+          </div>
+          {% endfor %}
+        </td>
+        <td>
+          {% for age in ages %}
+          <div class="col-md-3">
+            {{ age }} <br>
+          </div>
+          {% endfor %}
+        </td>
+        <td>
+          {% for gender in genders %}
+          <div class="col-md-2">
+            {{gender}} <br>
+          </div>
+          {% endfor %}
+        </td>
+          <!-- <div class="col-md-2">
+            <select name="seat" id="seat" >
+              <option value="noPreference" selected>No preference</option>
+              <option value="windowSeat">Window Seat</option>
+            </select>
+          </div> -->
+        </tr>
+      </tbody>
+        </table>
+        </div>
+      </form>
+    </div>   
+    
+    <div class="book">
+      <a href="name.html">
+        <button type="button" class="btn btn-secondary">Back</button>
+      </a>
+        <button type="button" class="btn btn-warning">Continue</button>
+    </div>
+  </div>
+</section>
+
+
+{% endblock content %}

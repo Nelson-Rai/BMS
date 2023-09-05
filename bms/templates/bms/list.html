@@ -1,0 +1,44 @@
+{% extends 'main.html' %} 
+{% block title %}
+ Ticket List
+{% endblock %}
+{% block content %}
+<section>
+  <div class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>Vehicle</th>
+          <th>Booked Ticket</th>
+          <th>Ticket Number</th>
+          <th>Total Cost</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      {% for ticket in tickets %}
+      {% if request.user.is_authenticated%}
+      {% if ticket.ticket_status == True  and user %}      
+        <tbody>
+            <td>{{ ticket.vehicle_id }} </td>
+            <td>{{ ticket.booked_ticket }}</td>
+            <td>{{ ticket.ticketNumber }}</td>
+            <td>{{ ticket.cost }}</td>
+            <td><a href="{% url 'cancelTicket' ticket.id%}"><button class="btn-warning">Cancel</button></a></td>
+        </tbody>
+        {% else %}
+          <tbody>
+            <td>{{ ticket.vehicle_id }} </td>
+            <td>{{ ticket.booked_ticket }}</td>
+            <td>{{ ticket.ticketNumber }}</td>
+            <td>{{ ticket.cost }}</td>
+            <td>Cancelled.</td>
+        </tbody>
+        {%endif%}
+        {%endif %}
+      {% endfor %}
+    </table>
+  </div>
+
+</section>
+
+{% endblock content %}

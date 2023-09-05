@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Management System</title>
+
+    <link rel="stylesheet" href="booking-list-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css" integrity="sha512-vebUliqxrVkBy3gucMhClmyQP9On/HAWQdKDXRaAlb/FKuTbxkjPKUyqVOxAcGwFDka79eTF+YXwfke1h3/wfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+</head>
+<body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="" alt="logo">
+            BMS
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li>
+                    <a href="#" ><button type="button" class="btn btn-success">Login</button></a>
+                  </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="home.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Ticket Status</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Pricing</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled">Disabled</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <!-- form -->
+    <form class="row g-3">
+        <div class="col-md-2">
+          <label for="from" class="form-label">From</label>
+          <select id="quota" class="form-select">
+            <option selected>Choose your source location</option>
+            <option value="Biratnagar">Biratnagar</option>
+            <option value="Damak">Damak</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <br>
+         <i class="las la-arrow-right la-3x"></i>
+     </div>
+     <div class="col-md-2">
+      <label for="to" class="form-label">To</label>
+      <select id="quota" class="form-select">
+        <option selected>Choose your destination location</option>
+        <option value="Biratnagar">Biratnagar</option>
+        <option value="Damak">Damak</option>
+      </select>
+    </div>
+     <div class="col-md-2">
+       <label for="date" class="form-label">MM/DD/YY</label>
+       <input type="date" class="form-control" id="date">
+     </div>
+     <div class="col-md-2">
+       <label for="Quota" class="form-label">Quota</label>
+       <select id="quota" class="form-select">
+         <option selected>Choose...</option>
+         <option value="senior-citizen">Senior Citizen</option>
+         <option value="female">Female</option>
+       </select>
+     </div>
+     <div class="col-3">
+       <div class="form-check">
+         <input class="form-check-input" type="checkbox" id="agree">
+         <label class="form-check-label" for="agree">
+           I agree to <a href="#">terms and conditions</a>.
+         </label>
+       </div>
+       <div>
+       <button type="submit" class="btn btn-warning">Search</button>
+     </div>
+   </div>
+   </form>
+
+   <!-- bus list -->
+   <div class="container">
+     <div class="row status">
+       <div class="col">
+         Nagarik Express (KO 1 PA 1983)
+       </div>
+       <div class="col">
+         Runs: Daily
+       </div>
+       <div class="col">
+         Bus Schedule
+       </div>
+     </div>
+     <div class="row schedule">
+       <div class="col">
+         Start <b>6:30</b> | Biratnagar | Sun, 30 Apr
+       </div>
+
+       <div class="col">
+        Duration <b>3:5 hrs</b>
+       </div>
+       <div class="col">
+         Complete <b>10:00</b> |  Kakarbhitta | Sun, 30 Apr
+       </div>
+     </div>
+     <div class="row tktstatus">
+      <div class="col-2 tkt">
+        <div class="bdate">
+          Sun, 1 Apr
+        </div>
+        Available : 20
+      </div>
+      <div class="col-2 tkt">
+        <div class="bdate">
+          Mon, 2 Apr
+        </div>
+        Available : 30
+      </div>
+      <div class="col-2 tkt">
+        <div class="bdate">
+          Tue, 3 Apr
+        </div>
+        Available : 12
+      </div>
+     </div>
+     
+     <div class="book">
+      <a href="name.html"> <button type="button" class="btn btn-warning">Book Now </button> </a>
+        <span class="price">Npr. 320</span>
+     </div>
+    </div>
+</body>
+</html>

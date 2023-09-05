@@ -1,0 +1,18 @@
+{% extends 'main.html' %} {% block content %}
+<div class="container">
+    <div class="bname">{{ vehicle.name }} | ({{ vehicle.vehicle_number }})</div>
+    <div class="row schedule">
+      <div class="col">Departure <b>{{ vehicle.departure }}</b> | {{ vehicle.source }} | {{vehicle.date}}</div>
+
+      <div class="col">Duration <b>3:5 hrs</b></div>
+      <div class="col">Arrival <b>{{ vehicle.arrival }}</b> | {{ vehicle.destination }} | <b>{{vehicle.arrive}}</b></div>
+    </div>
+
+    <div class="row">
+      <h3>Ticket Number: {{ ticketNumber }}</h3>
+        <h4>{{ book_ticket }} ticket/s issued. </h4>
+        <h5>Total Cost = NPR {{ cost }}</h5>
+
+        <span><button class="btn-success" onclick="window.print()">Print Ticket</button></span>
+    </div>
+{% endblock %}

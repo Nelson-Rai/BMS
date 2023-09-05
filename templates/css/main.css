@@ -1,0 +1,50 @@
+form{
+    background-color: rgb(1, 40, 109);
+    padding: 20px 30px;
+    color: white;   
+}
+form a{
+color: white;
+text-decoration: none;
+font-style: italic;
+}
+i{
+margin-left: 10px;
+}
+.status{
+background-color: whitesmoke;
+font-size: 22px;
+font-weight: bolder;
+text-align: center; 
+margin-top: 30px !important;
+padding: 5px 10px ;
+}
+.schedule{
+background-color: white;
+font-size: 18px;
+text-align: center; 
+margin: 9px 0px !important;
+}
+.bdate{
+font-size: 16px;
+font-weight: bold;
+}
+.tktstatus{
+background-color: whitesmoke;
+}
+
+.tkt{
+background-color: #fff;
+margin: 10px 30px !important;
+padding: 15px;
+border-radius: 8px;
+
+}
+.tkt:hover{
+cursor:pointer;
+border: 2px solid;
+border-color: black;
+}
+.book{
+margin-top: 10px;
+}
