@@ -29,11 +29,12 @@
   </head>
   <body>
     {% block navbar %}
+    {% load static %}
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <img src="" alt="logo" />
+          <img src="{% static 'assets/logo.jpeg' %}" alt="logo" height="35px" width="35px"/>
           BMS
         </a>
         <button
