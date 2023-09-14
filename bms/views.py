@@ -89,13 +89,13 @@ def printTicket(request, id):
     return HttpResponse("Please select number of tickets")
 
 @login_required(login_url='loginUser')
-def list(request):
+def ticketStatus(request):
     user = request.user
     if request.user: 
         tickets = bookTicket.objects.filter(user=user)
 
     context ={ 'tickets':tickets, 'user':user }
-    return render(request, 'bms/list.html',context)
+    return render(request, 'bms/ticketStatus.html',context)
 
 @login_required(login_url='loginUser')
 def cancelTicket(request, id):
