@@ -36,35 +36,13 @@ def index(request):
     # available = Vehicle.objects.get('available_seats')
 
 
-# def savePassenger(request, id):
-#     vehicle = Vehicle.objects.get(id=id)
-#     request.session.clear()
-#     passengers = Passenger.objects.all()
-#     context = {'vehicle':vehicle, 'passengers':passengers}
-#     return render(request, 'bms/passenger.html', context)
+@login_required(login_url='loginUser')
+def busList(request):
+    vehicles = Vehicle.objects.all()
 
-# def createPassenger(request, id):
-#     vehicle = Vehicle.objects.get(id=id)
-#     context = {'vehicle':vehicle}
-#     names =[]
-#     ages = []
-#     genders = []
-#     if request.method == 'POST':
-#         names = request.session.get('names', [])
-#         ages = request.session.get('ages', [])
-#         genders = request.session.get('genders', [])
-#         for i in '012345':
-#             name = request.POST.get('pname')
-#             age = request.POST.get('age')
-#             gender = request.POST.get('gender')
-#         names.append(name)
-#         ages.append(age)
-#         genders.append(gender)
-#         request.session['names'] = names
-#         request.session['ages'] = ages
-#         request.session['genders'] = genders 
-#         return redirect('confirmPassenger', id)
-#     return render(request, 'bms/createPassenger.html', context)
+    context = {'vehicles':vehicles}
+    return render(request, 'bms/busList.html', context)
+
 
 
 @login_required(login_url='loginUser')
@@ -108,7 +86,7 @@ def ticketStatus(request):
 @login_required(login_url='loginUser')
 def cancelTicket(request, id):
     bookTicket.objects.filter(id=id).update(ticket_status=False)
-    return redirect('list')
+    return redirect('ticketStatus')
 
 def loginUser(request):
     if request.user.is_authenticated:

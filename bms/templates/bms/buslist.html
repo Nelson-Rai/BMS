@@ -1,0 +1,48 @@
+{% extends 'main.html' %} {% block content %}
+<section>
+  <div class="container">
+    <div class="">
+      <a href=""> <button type="button" class="btn btn-success">Add Bus +</button> </a>
+    </div>
+  <table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th>Vehicle Id</th>
+        <th>Vehicle Number</th>
+        <th>Vehicle Name</th>
+        <th>Source</th>
+        <th>Destination</th>
+        <th>Departure Time</th>
+        <th>Arrival Time</th>
+        <th>Available Seats</th>
+        <th>Booked Seats</th>
+        <th>Ticket Fare</th>
+        <th>Vehicle Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for vehicle in vehicles %}
+      <tr>
+        <td>{{ vehicle.id }}</td>
+        <td>{{ vehicle.vehicle_number }}</td>
+        <td>{{ vehicle.name }}</td>
+        <td>{{ vehicle.source }}</td>
+        <td>{{ vehicle.destination }}</td>
+        <td>{{ vehicle.departure }}</td>
+        <td>{{ vehicle.arrive }}</td>
+        <td>{{ vehicle.available_seats }}</td>
+        <td>{{ vehicle.booked_seats }}</td>
+        <td>{{ vehicle.price }}</td>
+        <td>{{ vehicle.v_status }}</td>
+        <td><a href="#">Edit</a> | <a href="#">Disable</a></td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  
+</div>
+</section>
+{% endblock content %}
