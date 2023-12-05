@@ -33,6 +33,7 @@ class bookTicket(models.Model):
     # 'Vehicle' is use because Vehicle model is created below this class
     # User is directly imported on the top so no need to use ''.
     vehicle_id = models.ForeignKey('Vehicle', on_delete=models.CASCADE, related_name='vehicleid')
+    date = models.DateField(null=True)
     booked_ticket = models.IntegerField(default=0)
     ticketNumber = models.IntegerField(default=0000)
     cost = models.IntegerField(null=True)
@@ -50,15 +51,15 @@ class bookTicket(models.Model):
 class Vehicle(models.Model):
     name = models.CharField(max_length=50)
     vehicle_number = models.CharField(max_length=15)
-    source = models.CharField(max_length=50, null=True)
-    destination = models.CharField(max_length=50, null=True)
+    source = models.ForeignKey(busRoute, on_delete=models.CASCADE,default=1, related_name='sourceid')
+    destination = models.ForeignKey(busRoute, on_delete=models.CASCADE,default=1, related_name='destinationid')
     date = models.DateField(null=True)
     v_status = models.BooleanField(default=True)
     departure = models.TimeField(null=True, blank=True)
     arrive = models.TimeField(null=True, blank=True)
-    total_seats = models.IntegerField(default=0)
+    available_seats = models.IntegerField(default=25)
     booked_seats = models.IntegerField(default=0)
-    price = models.IntegerField(default=0)
+    price = models.IntegerField(default=20)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 

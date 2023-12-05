@@ -7,7 +7,12 @@
   <div class="container row g-4">
     <div class="col-md-3">
       <label for="from" class="form-label">From</label> <br />
-      <input type="text" name="source" id="" placeholder="Your location" />
+      <select name="source" id="">
+        <option value="">Select Departure</option>
+        {% for busRoute in busRoutes %}
+        <option value="{{ busRoute.id }}">{{ busRoute }}</option>
+        {% endfor %}
+      </select>
     </div>
 
     <div class="col-md-1">
@@ -16,13 +21,12 @@
     </div>
     <div class="col-md-3">
       <label for="to" class="form-label">To</label> <br />
-      <input
-        type="text"
-        name="destination"
-        id=""
-        placeholder="Your destination" 
-        value="{{ vehicle_list.destination }}"
-      />
+      <select name="destination" id="">
+        <option value="">Select destination</option>
+        {% for busRoute in busRoutes %}
+          <option value="{{ busRoute.id }}">{{ busRoute }}</option>
+        {% endfor %}
+    </select>
     </div>
     <div class="col-md-3">
       <label for="date" class="form-label">Date</label>
@@ -57,7 +61,7 @@
     </div>
     <div class="row tktstatus">
       <div class="col-2 tkt">
-        Available : <b> {{ vehicle_list.booked_seats}} seats </b> <br>
+        Available : <b> {{ vehicle_list.available_seats}} seats </b> <br>
         Book Ticket : <input type="number" id="book_ticket" name="book_ticket" required>
       </div>
     </div>
@@ -66,6 +70,11 @@
     {% endfor %} {{ error }}
   </div>
 </form>
+
+
+
+
+
 <script>
   function confirmTicket(){
     let ticket = document.getElementById('book_ticket').value;

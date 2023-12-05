@@ -12,9 +12,9 @@ from django.db.models import Q
 
 @login_required(login_url='loginUser')
 def index(request):
-    # busRoutes = busRoute.objects.all()
+    busRoutes = busRoute.objects.all()
     
-    context={}
+    context={'busRoutes':busRoutes}
     if request.method == 'POST':
         source_r = request.POST.get('source')
         destination_r = request.POST.get('destination')
@@ -22,13 +22,16 @@ def index(request):
         vehicles_list = Vehicle.objects.filter(source=source_r, destination=destination_r, date=date_r)
         # vehicles = Vehicle.objects.filter(source=source_r, destination=destination_r, date=date_r)
         # context = {'vehicles':vehicles}
+        request.session['date'] = date_r
+        request.session.save()
+
         if vehicles_list:
             # context={'vehicles_list':vehicles_list}
             return render(request, 'bms/index.html', locals())
         else:
             context["error"] = "No bus available."
             return render(request, 'bms/index.html', context)
-    return render(request, 'bms/index.html')
+    return render(request, 'bms/index.html', context)
     # availables = Vehicle.objects.get('total_seats')
     # available = Vehicle.objects.get('available_seats')
 
@@ -68,16 +71,21 @@ def index(request):
 def printTicket(request, id):
     vehicle = Vehicle.objects.get(id=id)
     ticketNum = bookTicket.objects.latest('ticketNumber')
+    # here when ticketNum is null it generates error. solve it.
     user = request.user
     # booked_seats = int(request.POST.get('booked_seats'))
     if request.method == "POST":
         book_ticket = int(request.POST.get('book_ticket'))
         book = vehicle.booked_seats
+        date = request.session.get('date')
+        # if ticketNum is None:
+        #     ticket=1
         ticket = ticketNum.ticketNumber + 1
         cost = vehicle.price*book_ticket
         book_seats = book+book_ticket
-        Vehicle.objects.filter(id=id).update(booked_seats=book_seats)
-        bookTicket.objects.create(user=user,vehicle_id=vehicle, booked_ticket=book_ticket,ticketNumber=ticket, cost=cost)
+        available = vehicle.available_seats-book_ticket
+        Vehicle.objects.filter(id=id).update(booked_seats=book_seats, available_seats=available)
+        bookTicket.objects.create(user=user,vehicle_id=vehicle, date=date, booked_ticket=book_ticket,ticketNumber=ticket, cost=cost)
 
         context = {
             'vehicle':vehicle, 
