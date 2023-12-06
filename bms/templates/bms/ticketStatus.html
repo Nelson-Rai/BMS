@@ -2,6 +2,17 @@
 {% block title %}
  Ticket Status
 {% endblock %}
+{% block navItem %}
+            <li class="nav-item">
+              <a class="nav-link " aria-current="page" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="{% url 'busList' %}">Bus List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'ticketStatus' %}">Ticket Status</a>
+            </li>
+{% endblock navItem %}
 {% block content %}
 <section>
   <div class="container">
@@ -31,6 +42,7 @@
           <tbody>
             <td>{{ ticket.vehicle_id }} </td>
             <td>{{ ticket.booked_ticket }}</td>
+            <td>{{ ticket.date }}</td>
             <td>{{ ticket.ticketNumber }}</td>
             <td>{{ ticket.cost }}</td>
             <td>Cancelled.</td>

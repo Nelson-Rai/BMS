@@ -43,10 +43,20 @@ def busList(request):
     context = {'vehicles':vehicles}
     return render(request, 'bms/busList.html', context)
 
-
+@login_required(login_url='loginUser')
+def addBus(request):
+    return render(request, 'bms/addBus.html')
 
 @login_required(login_url='loginUser')
-def printTicket(request, id):
+def editBus(request):
+    return render(request, 'bms/editBus.html')
+
+@login_required(login_url='loginUser')
+def disableBus(request):
+    return redirect('busList')
+
+@login_required(login_url='loginUser')
+def issueTicket(request, id):
     vehicle = Vehicle.objects.get(id=id)
     ticketNum = bookTicket.objects.latest('ticketNumber')
     # here when ticketNum is null it generates error. solve it.

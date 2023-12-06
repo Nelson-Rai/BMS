@@ -1,0 +1,60 @@
+{% extends 'main.html' %} 
+{% block title %}
+Edit Bus
+{% endblock %}
+{% block content %}
+
+<div class="container mt-3">
+    <form class="row g-3">
+        <div class="col-md-6">
+          <label for="vehicleName" class="form-label">Vehicle Name</label>
+          <input type="text" class="form-control" id="Vname" placeholder="Makalu Express" required>
+        </div>
+        <div class="col-md-6">
+            <label for="VehicleNumber" class="form-label">Vehicle Number</label>
+            <input type="text" class="form-control" id="Vnumber" placeholder="NA 1 KHA 1200" required>
+          </div>
+          <div class="col-md-6">
+            <label for="source" class="form-label">Source</label>
+            <select name="source" id="" class="form-select" aria-label="Select Source" required>
+                <option value="">Select your vehicle source</option>
+                <option value="1">1</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="destination" class="form-label">Destination</label>
+            <select name="destination" id="" class="form-select" aria-label="Select Destination" required>
+                <option value="">Select your vehicle destination</option>
+                <option value="1">1</option>
+            </select>
+          </div>
+        <div class="col-md-6">
+          <label for="Departure" class="form-label">Time of Departure</label>
+          <input type="time" class="form-control" id="Dtime" required>
+        </div>
+        <div class="col-md-6">
+            <label for="Arrival" class="form-label">Time of Arrival</label>
+            <input type="time" class="form-control" id="Atime" required>
+          </div>
+          <div class="col-md-6">
+            <label for="DepartureDate" class="form-label">Date of Departure</label>
+            <input type="date" class="form-control" id="" required>
+          </div>
+          <div class="col-md-6">
+              <label for="TotalSeats" class="form-label"> Total Seats</label>
+              <input type="number" class="form-control" id="" placeholder="Enter Total Seats" required>
+            </div>
+              <div class="col-md-6">
+                  <label for="Price" class="form-label">Rate per ticket</label>
+                  <input type="number" class="form-control" id="" placeholder="500" required>
+                </div>
+          
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+</div>
+
+
+
+{% endblock content %}

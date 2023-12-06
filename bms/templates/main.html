@@ -63,6 +63,7 @@
               </a>
             </li>
             {% endif %}
+            {% block navItem %}
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
             </li>
@@ -72,6 +73,7 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'ticketStatus' %}">Ticket Status</a>
             </li>
+            {% endblock navItem %}
           </ul>
         </div>
         <div>
@@ -81,6 +83,8 @@
         </div>
       </div>
     </nav> {% endblock %}
-    {% block content %} {% endblock %}
+    {% block content %} 
+    <!-- body content is extended here -->
+    {% endblock %}
   </body>
 </html>

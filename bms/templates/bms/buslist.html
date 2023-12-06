@@ -1,8 +1,24 @@
-{% extends 'main.html' %} {% block content %}
+{% extends 'main.html' %} 
+{% block title %}
+Bus List
+{% endblock %}
+{% block navItem %}
+            <li class="nav-item">
+              <a class="nav-link " aria-current="page" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'busList' %}">Bus List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'ticketStatus' %}">Ticket Status</a>
+            </li>
+{% endblock navItem %}
+
+{% block content %} 
 <section>
   <div class="container">
     <div class="">
-      <a href=""> <button type="button" class="btn btn-success">Add Bus +</button> </a>
+      <a href="{% url 'addBus' %}"> <button type="button" class="btn btn-success">Add Bus +</button> </a>
     </div>
   <table class="table">
     <thead class="table-dark">
@@ -34,8 +50,17 @@
         <td>{{ vehicle.available_seats }}</td>
         <td>{{ vehicle.booked_seats }}</td>
         <td>{{ vehicle.price }}</td>
-        <td>{{ vehicle.v_status }}</td>
-        <td><a href="#">Edit</a> | <a href="#">Disable</a></td>
+        {% if vehicle.v_status == True %}
+        <td> Active </td>
+        {% else %}
+        <td>Disabled</td>
+        {% endif %}
+        <td><a href="#">Edit</a> | 
+          {% if vehicle.v_status == True %}
+          <a href="#">Disable</a> 
+          {% else %}
+          <a href="#">Enable</a>
+          {% endif %}</td>
 
       </tr>
       {% endfor %}

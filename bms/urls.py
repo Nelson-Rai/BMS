@@ -7,9 +7,10 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('logout', views.logoutUser, name='logout'),
     path('ticketStatus', views.ticketStatus, name='ticketStatus'),
-    path('printTicket/<str:id>', views.printTicket, name='printTicket'),
+    path('issueTicket/<str:id>', views.issueTicket, name='issueTicket'),
     path('cancelTicket/<str:id>', views.cancelTicket, name='cancelTicket'),
     path('buslist', views.busList, name='busList'),
+    path('addBus', views.addBus, name='addBus'),
 
     # path('passenger/confirm/<str:id>', views.confirmPassenger, name='confirmPassenger')
 

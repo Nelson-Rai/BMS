@@ -41,13 +41,13 @@
 
 <!-- bus list -->
 {% for vehicle_list in vehicles_list %}
-<form class="form-control" id="book_ticket_form" method="POST" action="{% url 'printTicket' vehicle_list.id %}" onsubmit=" return confirmTicket()">
+<form class="form-control" id="book_ticket_form" method="POST" action="{% url 'issueTicket' vehicle_list.id %}" onsubmit=" return confirmTicket()">
   {% csrf_token %}
   <div class="container">
     <div class="row status">
       <div class="col">{{ vehicle_list.name }} ({{ vehicle_list.vehicle_number }})</div>
       <div class="col">Runs: Daily</div>
-      <div class="col">Bus Schedule</div>
+      
     </div>
     <div class="row schedule">
       <div class="col">
