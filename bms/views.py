@@ -20,8 +20,6 @@ def index(request):
         destination_r = request.POST.get('destination')
         date_r = request.POST.get('date')
         vehicles_list = Vehicle.objects.filter(source=source_r, destination=destination_r, date=date_r)
-        # vehicles = Vehicle.objects.filter(source=source_r, destination=destination_r, date=date_r)
-        # context = {'vehicles':vehicles}
         request.session['date'] = date_r
         request.session.save()
 
@@ -32,27 +30,79 @@ def index(request):
             context["error"] = "No bus available."
             return render(request, 'bms/index.html', context)
     return render(request, 'bms/index.html', context)
-    # availables = Vehicle.objects.get('total_seats')
-    # available = Vehicle.objects.get('available_seats')
 
 
 @login_required(login_url='loginUser')
 def busList(request):
     vehicles = Vehicle.objects.all()
-
-    context = {'vehicles':vehicles}
+    successMessages = messages.get_messages(request)
+    context = {'vehicles':vehicles, 'messages':successMessages}
     return render(request, 'bms/busList.html', context)
 
 @login_required(login_url='loginUser')
 def addBus(request):
-    return render(request, 'bms/addBus.html')
+    busRoutes = busRoute.objects.all()
+    context = {'busRoutes':busRoutes}
+    return render(request, 'bms/addBus.html', context)
+
 
 @login_required(login_url='loginUser')
-def editBus(request):
-    return render(request, 'bms/editBus.html')
+def createBus(request):
+    if request.method == 'POST':
+        name = request.POST.get('Vname')
+        vehicle_number = request.POST.get('Vnumber')
+        sourceid = int(request.POST.get('source'))
+        source = busRoute.objects.get(id=sourceid)
+        destinationid = int(request.POST.get('destination'))
+        destination = busRoute.objects.get(id=destinationid)
+        date = request.POST.get('date')
+        departure = request.POST.get('Dtime')
+        arrive = request.POST.get('Atime')
+        available_seats = request.POST.get('seats')
+        price = request.POST.get('price')
+        Vehicle.objects.create(name=name, vehicle_number=vehicle_number, source=source, destination=destination, date=date, departure=departure, arrive=arrive, available_seats=available_seats, price=price) 
+
+        messages.success(request, 'New Bus added Successfully')
+        return redirect('busList')
+    return HttpResponse('Something Went Wrong') 
 
 @login_required(login_url='loginUser')
-def disableBus(request):
+def editBus(request, id):
+    # vehicle = Vehicle.objects.get(id=id)
+    busRoutes = busRoute.objects.all()
+    vehicle = Vehicle.objects.get(id=id)
+
+    
+    if request.method == 'POST':
+        name = request.POST.get('Vname')
+        vehicle_number = request.POST.get('Vnumber')
+        sourceid = int(request.POST.get('source'))
+        source = busRoute.objects.get(id=sourceid)
+        destinationid = int(request.POST.get('destination'))
+        destination = busRoute.objects.get(id=destinationid)
+        date = request.POST.get('date')
+        departure = request.POST.get('Dtime')
+        arrive = request.POST.get('Atime')
+        available_seats = request.POST.get('seats')
+        price = request.POST.get('price')
+        Vehicle.objects.filter(id=id).update(name=name, vehicle_number=vehicle_number, source=source, destination=destination, date=date, departure=departure, arrive=arrive, available_seats=available_seats, price=price) 
+
+        messages.success(request, 'Bus edited Successfully')
+        return redirect('busList')
+    context = {
+        'busRoutes':busRoutes,
+        'vehicle' : vehicle,
+        }
+    return render(request, 'bms/editBus.html', context)
+
+@login_required(login_url='loginUser')
+def disableBus(request, id):
+    Vehicle.objects.filter(id=id).update(v_status=False)
+    return redirect('busList')
+
+@login_required(login_url='loginUser')
+def enableBus(request, id):
+    Vehicle.objects.filter(id=id).update(v_status=True)
     return redirect('busList')
 
 @login_required(login_url='loginUser')

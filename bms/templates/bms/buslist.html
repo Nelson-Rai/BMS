@@ -16,7 +16,14 @@ Bus List
 
 {% block content %} 
 <section>
-  <div class="container">
+  <div class="container mt-3">
+    <div>
+          {% if messages %}
+            {% for message in messages %}
+              <p class="bg-success text-white p-3 fs-5">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+    </div>
     <div class="">
       <a href="{% url 'addBus' %}"> <button type="button" class="btn btn-success">Add Bus +</button> </a>
     </div>
@@ -55,11 +62,11 @@ Bus List
         {% else %}
         <td>Disabled</td>
         {% endif %}
-        <td><a href="#">Edit</a> | 
+          <td><a href="{% url 'editBus' vehicle.id %}">Edit</a> | 
           {% if vehicle.v_status == True %}
-          <a href="#">Disable</a> 
+          <a href="{% url 'disableBus' vehicle.id %}">Disable</a> 
           {% else %}
-          <a href="#">Enable</a>
+          <a href="{% url 'enableBus' vehicle.id %}">Enable</a>
           {% endif %}</td>
 
       </tr>

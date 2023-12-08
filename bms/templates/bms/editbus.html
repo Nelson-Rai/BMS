@@ -4,57 +4,70 @@ Edit Bus
 {% endblock %}
 {% block content %}
 
+
 <div class="container mt-3">
-    <form class="row g-3">
+    <form class="row g-3" method="post">
+      {% csrf_token %}
         <div class="col-md-6">
           <label for="vehicleName" class="form-label">Vehicle Name</label>
-          <input type="text" class="form-control" id="Vname" placeholder="Makalu Express" required>
+          <input type="text" class="form-control" name="Vname" placeholder="Makalu Express" value="{{ vehicle.name }}" required >
         </div>
         <div class="col-md-6">
             <label for="VehicleNumber" class="form-label">Vehicle Number</label>
-            <input type="text" class="form-control" id="Vnumber" placeholder="NA 1 KHA 1200" required>
+            <input type="text" class="form-control" name="Vnumber" placeholder="NA 1 KHA 1200" value="{{ vehicle.vehicle_number }}" required>
           </div>
           <div class="col-md-6">
             <label for="source" class="form-label">Source</label>
-            <select name="source" id="" class="form-select" aria-label="Select Source" required>
-                <option value="">Select your vehicle source</option>
-                <option value="1">1</option>
+            <select name="source" class="form-select" aria-label="Select Source" required>
+              <option value="">Select source</option>
+              {% for busRoute in busRoutes %}
+              <option value="{{ busRoute.id }}"  {% if busRoute.id == vehicle.source.id %} selected {% endif %}>{{ busRoute }}</option>
+              {% endfor %}
             </select>
           </div>
           <div class="col-md-6">
             <label for="destination" class="form-label">Destination</label>
-            <select name="destination" id="" class="form-select" aria-label="Select Destination" required>
-                <option value="">Select your vehicle destination</option>
-                <option value="1">1</option>
+            <select name="destination" class="form-select" aria-label="Select Destination" required>
+              <option value="">Select destination</option>
+              {% for busRoute in busRoutes %}
+              <option value="{{ busRoute.id }}"  {% if busRoute.id == vehicle.destination.id %} selected {% endif %}>{{ busRoute }}</option>
+              {% endfor %}
             </select>
           </div>
         <div class="col-md-6">
           <label for="Departure" class="form-label">Time of Departure</label>
-          <input type="time" class="form-control" id="Dtime" required>
+          <input type="time" class="form-control" name="Dtime" value="{{ vehicle.departure | time:'h:i:s' }}" required>
         </div>
         <div class="col-md-6">
             <label for="Arrival" class="form-label">Time of Arrival</label>
-            <input type="time" class="form-control" id="Atime" required>
+            
+            <input type="time" class="form-control" name="Atime" value="{{ vehicle.arrive | time:'h:i:s' }}" required>
           </div>
           <div class="col-md-6">
-            <label for="DepartureDate" class="form-label">Date of Departure</label>
-            <input type="date" class="form-control" id="" required>
+            <label for="departureDate" class="form-label">Date of Departure</label>
+            <input type="date" class="form-control" name="date" value="{{ vehicle.date | date:'Y-m-d' }}" required>
           </div>
           <div class="col-md-6">
               <label for="TotalSeats" class="form-label"> Total Seats</label>
-              <input type="number" class="form-control" id="" placeholder="Enter Total Seats" required>
+              <input type="number" class="form-control" name="seats" placeholder="Enter Total Seats" value="{{ vehicle.available_seats }}" required>
             </div>
               <div class="col-md-6">
-                  <label for="Price" class="form-label">Rate per ticket</label>
-                  <input type="number" class="form-control" id="" placeholder="500" required>
+                  <label for="Price" class="form-label">Price per ticket</label>
+                  <input type="number" class="form-control" name="price" placeholder="500" value="{{ vehicle.price }}" required>
                 </div>
-          
+                {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %} 
+                       <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                       </div>
+                    {% endfor %}
+                {% endfor %}
+             {% endif %}
         <div class="col-12">
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">Edit Bus</button>
         </div>
       </form>
 </div>
-
-
 
 {% endblock content %}
