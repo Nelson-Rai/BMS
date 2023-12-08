@@ -40,10 +40,11 @@
 </form>
 
 <!-- bus list -->
+<div class="container">
 {% for vehicle_list in vehicles_list %}
 <form class="form-control" id="book_ticket_form" method="POST" action="{% url 'issueTicket' vehicle_list.id %}" onsubmit=" return confirmTicket()">
   {% csrf_token %}
-  <div class="container">
+  
     <div class="row status">
       <div class="col">{{ vehicle_list.name }} ({{ vehicle_list.vehicle_number }})</div>
       <div class="col">Runs: Daily</div>
@@ -61,14 +62,27 @@
     </div>
     <div class="row tktstatus">
       <div class="col-2 tkt">
+        {% if vehicle_list.v_status == False %}
+        Bus Cancelled
+        {% else %}
         Available : <b> {{ vehicle_list.available_seats}} seats </b> <br>
         Book Ticket : <input type="number" id="book_ticket" name="book_ticket" required>
+        {% endif %}
       </div>
     </div>
-    <button type="submit" class="btn btn-warning">Book Now</button>
+    
+    {% if vehicle_list.v_status == False %}
+    <button type="submit" class="btn btn-danger disabled my-2">Book Now</button>
+    <span class="price text-decoration-line-through">NPR {{ vehicle_list.price }}</span>
+      {% else %}
+    <button type="submit" class="btn btn-warning my-2">Book Now</button>
     <span class="price">NPR {{ vehicle_list.price }}</span>
+    {% endif %}
+    <hr>
     {% endfor %} {{ error }}
+    
   </div>
+  
 </form>
 
 
