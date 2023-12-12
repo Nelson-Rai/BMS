@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Vehicle, busRoute, Passenger, bookTicket
 from django.db.models import Q
+from django.http import JsonResponse
+
 
 # Create your views here.
 
@@ -135,13 +137,26 @@ def issueTicket(request, id):
     return HttpResponse("Please select number of tickets")
 
 @login_required(login_url='loginUser')
+def print(request):
+    return render(request, 'printTicket.html')
+
+
+@login_required(login_url='loginUser')
 def ticketStatus(request):
+
     user = request.user
     if request.user: 
         tickets = bookTicket.objects.filter(user=user)
 
-    context ={ 'tickets':tickets, 'user':user }
+    context ={ 
+                'tickets':tickets,
+                'user':user,
+                # 'vehicle': vehicle,
+                 }
     return render(request, 'bms/ticketStatus.html',context)
+
+
+
 
 @login_required(login_url='loginUser')
 def cancelTicket(request, id):

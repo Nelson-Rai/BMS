@@ -16,8 +16,8 @@
 {% block content %}
 <section>
   <div class="container">
-    <table>
-      <thead>
+    <table class="table mt-3">
+      <thead class="table-dark">
         <tr>
           <th>Vehicle</th>
           <th>Booked Ticket</th>
@@ -36,7 +36,48 @@
             <td>{{ ticket.date }}</td>
             <td>{{ ticket.ticketNumber }}</td>
             <td>{{ ticket.cost }}</td>
-            <td><a href="{% url 'cancelTicket' ticket.id%}"><button class="btn-warning">Cancel</button></a></td>
+            <td><a href="{% url 'cancelTicket' ticket.id%}"><button class="btn-warning">Cancel</button></a> | 
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#printTicket" >
+                 Print </button>
+                  </td> 
+          
+                 <!-- Modal  -->
+            <div class="modal fade" id="printTicket" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="">Print Ticket</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="container">
+                      <div class="ticket" id="ticket-details">
+                        <div class="bname">{{ ticket.vehicle_id }} | ({{ ticket.vehicle_id.vehicle_number }})</div>
+                         <div class=" schedule">
+                          <div class="col">Departure <b>{{ ticket.vehicle_id.departure }}</b> | {{ ticket.vehicle_id.source }} | {{ticket.vehicle_id.date}}</div>
+
+                          <div class="col">Duration <b>3:5 hrs</b></div>
+                          <div class="col">Arrival  {{ ticket.vehicle_id.destination }} | <b>{{ticket.vehicle_id.arrive}}</b></div>
+                        </div>
+
+                        <div class="row">
+                          <h3>Ticket Number: {{ ticket.ticketNumber }}</h3>
+                            <h4>{{ ticket.booked_ticket }} ticket/s issued. </h4>
+                            <h5>Total Cost = NPR {{ ticket.cost }}</h5>
+                          </div>
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="printTicket()">Print</button>
+                  </div>
+                </div>
+              </div>
+            </div> 
+          </div>
+          
+
+
         </tbody>
         {% else %}
           <tbody>
@@ -54,5 +95,20 @@
   </div>
 
 </section>
+<script>
+  function printTicket() {
+      var printTicket = document.getElementById('ticket-details').innerHTML;
+      var originalBody = document.body.innerHTML;
+
+      document.body.innerHTML = printTicket;
+      window.print();
+
+      // Restore the original content
+      document.body.innerHTML = originalBody;
+      
+  }
+
+</script>
+
 
 {% endblock content %}

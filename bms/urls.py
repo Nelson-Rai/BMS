@@ -8,6 +8,7 @@ urlpatterns = [
     path('logout', views.logoutUser, name='logout'),
     path('ticketStatus', views.ticketStatus, name='ticketStatus'),
     path('issueTicket/<str:id>', views.issueTicket, name='issueTicket'),
+    path('print', views.print, name='print'),
     path('cancelTicket/<str:id>', views.cancelTicket, name='cancelTicket'),
     path('buslist', views.busList, name='busList'),
     path('addBus', views.addBus, name='addBus'),
@@ -15,6 +16,7 @@ urlpatterns = [
     path('editBus/<str:id>', views.editBus, name='editBus'),
     path('disableBus/<str:id>', views.disableBus, name='disableBus'),
     path('enableBus/<str:id>', views.enableBus, name='enableBus'),
+    
 
     # path('passenger/confirm/<str:id>', views.confirmPassenger, name='confirmPassenger')
 

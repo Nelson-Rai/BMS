@@ -7,8 +7,8 @@
   <div class="container row g-4">
     <div class="col-md-3">
       <label for="from" class="form-label">From</label> <br />
-      <select name="source" id="">
-        <option value="">Select Departure</option>
+      <select name="source" id="" class="form-select">
+        <option value="" >Select Departure</option>
         {% for busRoute in busRoutes %}
         <option value="{{ busRoute.id }}">{{ busRoute }}</option>
         {% endfor %}
@@ -21,8 +21,8 @@
     </div>
     <div class="col-md-3">
       <label for="to" class="form-label">To</label> <br />
-      <select name="destination" id="">
-        <option value="">Select destination</option>
+      <select name="destination" id="" class="form-select">
+        <option value="" >Select destination</option>
         {% for busRoute in busRoutes %}
           <option value="{{ busRoute.id }}">{{ busRoute }}</option>
         {% endfor %}

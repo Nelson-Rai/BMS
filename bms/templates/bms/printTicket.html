@@ -1,18 +1,75 @@
 {% extends 'main.html' %} {% block content %}
 <div class="container">
-    <div class="bname">{{ vehicle.name }} | ({{ vehicle.vehicle_number }})</div>
-    <div class="row schedule">
-      <div class="col">Departure <b>{{ vehicle.departure }}</b> | {{ vehicle.source }} | {{vehicle.date}}</div>
+  <div class="ticket" id="ticket">
+    <div class="bname"> <b>{{ vehicle.name }}</b> | <b> ({{ vehicle.vehicle_number }})</b> </div>
+    <div class=" schedule">
+      <div class="col">Departure <b>{{ vehicle.departure }}</b> | <b> {{ vehicle.source }} </b> | <b> {{vehicle.date}} </b> </div>
 
       <div class="col">Duration <b>3:5 hrs</b></div>
-      <div class="col">Arrival <b>{{ vehicle.arrival }}</b> | {{ vehicle.destination }} | <b>{{vehicle.arrive}}</b></div>
+      <div class="col">Arrival <b> {{ vehicle.destination }} </b> | <b>{{vehicle.arrive}}</b></div>
     </div>
 
     <div class="row">
       <h3>Ticket Number: {{ ticketNumber }}</h3>
         <h4>{{ book_ticket }} ticket/s issued. </h4>
         <h5>Total Cost = NPR {{ cost }}</h5>
-
-        <span><button class="btn-success" onclick="window.print()">Print Ticket</button></span>
+      </div>
+        
     </div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#printTicket" >
+      Print </button>
+
+    <!-- Modal  -->
+    <div class="modal fade" id="printTicket" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="">Print Ticket</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <div class="ticket" id="ticket-details">
+                <div class="bname"><b> {{ vehicle.name }} </b>| <b> ({{ vehicle.vehicle_number }})</b></div>
+                 <div class=" schedule">
+                  <div class="col">Departure <b>{{ vehicle.departure }}</b> |<b> {{ vehicle.source }} </b> |<b> {{vehicle.date}}</b> </div>
+
+                  <div class="col">Duration <b>3:5 hrs</b></div>
+                  <div class="col">Arrival   <b>{{ vehicle.destination }}</b> | <b>{{vehicle.arrive}}</b></div>
+                </div>
+
+                <div class="row">
+                  <h3>Ticket Number: {{ticketNumber }}</h3>
+                    <h4>{{ booked_ticket }} ticket/s issued. </h4>
+                    <h5>Total Cost = NPR {{ cost }}</h5>
+                  </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="printTicket()">Print</button>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+  </div>
+  
+  <script>
+    function printTicket() {
+        var printTicket = document.getElementById('ticket-details').innerHTML;
+        var originalBody = document.body.innerHTML;
+  
+        document.body.innerHTML = printTicket;
+        window.print();
+  
+        // Restore the original content
+        document.body.innerHTML = originalBody;
+        
+    }
+  
+  </script>
+
+    
+    
 {% endblock %}
