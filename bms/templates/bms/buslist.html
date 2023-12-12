@@ -24,9 +24,11 @@ Bus List
             {% endfor %}
           {% endif %}
     </div>
+    {% if request.user.is_superuser %}
     <div class="">
       <a href="{% url 'addBus' %}"> <button type="button" class="btn btn-success">Add Bus +</button> </a>
     </div>
+    {% endif %}
   <table class="table mt-3">
     <thead class="table-dark">
       <tr>
@@ -41,7 +43,9 @@ Bus List
         <th>Seats</th>
         <th>Fare</th>
         <th>Status</th>
+        {% if request.user.is_superuser %}
         <th>Action</th>
+      {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -57,17 +61,20 @@ Bus List
         <td>{{ vehicle.arrive }}</td>
         <td>{{ vehicle.available_seats }}</td>
         <td>{{ vehicle.price }}</td>
+        
         {% if vehicle.v_status == True %}
-        <td> Active </td>
-        {% else %}
-        <td>Disabled</td>
-        {% endif %}
-          <td><a href="{% url 'editBus' vehicle.id %}">Edit</a> | 
-          {% if vehicle.v_status == True %}
-          <a href="{% url 'disableBus' vehicle.id %}">Disable</a> 
+          <td> Active </td>
           {% else %}
-          <a href="{% url 'enableBus' vehicle.id %}">Enable</a>
-          {% endif %}</td>
+          <td>Disabled</td>
+        {% endif %}
+        {% if request.user.is_superuser %}
+            <td><a href="{% url 'editBus' vehicle.id %}">Edit</a> | 
+            {% if vehicle.v_status == True %}
+            <a href="{% url 'disableBus' vehicle.id %}">Disable</a> 
+            {% else %}
+            <a href="{% url 'enableBus' vehicle.id %}">Enable</a>
+            {% endif %}</td>
+          {% endif %}
 
       </tr>
       {% endfor %}

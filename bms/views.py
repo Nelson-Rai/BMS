@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Vehicle, busRoute, Passenger, bookTicket
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import HttpResponseForbidden
 
 
 # Create your views here.
@@ -45,12 +45,14 @@ def busList(request):
 def addBus(request):
     busRoutes = busRoute.objects.all()
     context = {'busRoutes':busRoutes}
-    return render(request, 'bms/addBus.html', context)
-
+    if  request.user.is_superuser:
+        return render(request, 'bms/addBus.html', context)
+    else:
+        return HttpResponseForbidden("You do not have permission to access this page.")
 
 @login_required(login_url='loginUser')
 def createBus(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.is_superuser:
         name = request.POST.get('Vname')
         vehicle_number = request.POST.get('Vnumber')
         sourceid = int(request.POST.get('source'))
@@ -66,7 +68,9 @@ def createBus(request):
 
         messages.success(request, 'New Bus added Successfully')
         return redirect('busList')
-    return HttpResponse('Something Went Wrong') 
+    else:
+        return HttpResponseForbidden("You do not have permission to access this page.")
+    
 
 @login_required(login_url='loginUser')
 def editBus(request, id):
@@ -74,38 +78,48 @@ def editBus(request, id):
     busRoutes = busRoute.objects.all()
     vehicle = Vehicle.objects.get(id=id)
 
-    
-    if request.method == 'POST':
-        name = request.POST.get('Vname')
-        vehicle_number = request.POST.get('Vnumber')
-        sourceid = int(request.POST.get('source'))
-        source = busRoute.objects.get(id=sourceid)
-        destinationid = int(request.POST.get('destination'))
-        destination = busRoute.objects.get(id=destinationid)
-        date = request.POST.get('date')
-        departure = request.POST.get('Dtime')
-        arrive = request.POST.get('Atime')
-        available_seats = request.POST.get('seats')
-        price = request.POST.get('price')
-        Vehicle.objects.filter(id=id).update(name=name, vehicle_number=vehicle_number, source=source, destination=destination, date=date, departure=departure, arrive=arrive, available_seats=available_seats, price=price) 
+    if request.user.is_superuser:
+        if request.method == 'POST' :
+            name = request.POST.get('Vname')
+            vehicle_number = request.POST.get('Vnumber')
+            sourceid = int(request.POST.get('source'))
+            source = busRoute.objects.get(id=sourceid)
+            destinationid = int(request.POST.get('destination'))
+            destination = busRoute.objects.get(id=destinationid)
+            date = request.POST.get('date')
+            departure = request.POST.get('Dtime')
+            arrive = request.POST.get('Atime')
+            available_seats = request.POST.get('seats')
+            price = request.POST.get('price')
+            Vehicle.objects.filter(id=id).update(name=name, vehicle_number=vehicle_number, source=source, destination=destination, date=date, departure=departure, arrive=arrive, available_seats=available_seats, price=price) 
 
-        messages.success(request, 'Bus edited Successfully')
-        return redirect('busList')
-    context = {
-        'busRoutes':busRoutes,
-        'vehicle' : vehicle,
-        }
-    return render(request, 'bms/editBus.html', context)
+            messages.success(request, 'Bus edited Successfully')
+            return redirect('busList')
+        context = {
+            'busRoutes':busRoutes,
+            'vehicle' : vehicle,
+            }
+        return render(request, 'bms/editBus.html', context)
+    else:
+       return HttpResponseForbidden("You do not have permission to access this page.") 
 
 @login_required(login_url='loginUser')
 def disableBus(request, id):
-    Vehicle.objects.filter(id=id).update(v_status=False)
-    return redirect('busList')
+    if  request.user.is_superuser:
+        Vehicle.objects.filter(id=id).update(v_status=False)
+        return redirect('busList')
+    else:
+        return HttpResponseForbidden("You do not have permission to access this page.")
+
+
 
 @login_required(login_url='loginUser')
 def enableBus(request, id):
-    Vehicle.objects.filter(id=id).update(v_status=True)
-    return redirect('busList')
+    if  request.user.is_superuser:
+        Vehicle.objects.filter(id=id).update(v_status=True)
+        return redirect('busList')
+    else:
+        return HttpResponseForbidden("You do not have permission to access this page.")
 
 @login_required(login_url='loginUser')
 def issueTicket(request, id):
@@ -155,13 +169,13 @@ def ticketStatus(request):
                  }
     return render(request, 'bms/ticketStatus.html',context)
 
-
-
-
 @login_required(login_url='loginUser')
 def cancelTicket(request, id):
-    bookTicket.objects.filter(id=id).update(ticket_status=False)
-    return redirect('ticketStatus')
+    user = request.user
+    if request.user: 
+        bookTicket.objects.filter(id=id, user=user).update(ticket_status=False)
+        return redirect('ticketStatus')
+    return HttpResponse("Ticket doesnot exist")
 
 def loginUser(request):
     if request.user.is_authenticated:
