@@ -12,22 +12,6 @@ class busRoute(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class Passenger(models.Model):
-    name = models.CharField(max_length=50)
-    age = models.CharField(max_length=3)
-    gender = models.CharField(max_length=10)
-    vehicle = models.ForeignKey('Vehicle', on_delete=models.CASCADE, default=None, null=True)
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['-updated', '-created']
-
-    def __str__(self):
-        return self.name
-
 class bookTicket(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # 'Vehicle' is use because Vehicle model is created below this class
