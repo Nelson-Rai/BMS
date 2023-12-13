@@ -1,0 +1,67 @@
+{% extends 'main.html' %} 
+{% block title %}
+ Bus Routes
+{% endblock %}
+{% block navItem %}
+            <li class="nav-item">
+              <a class="nav-link " aria-current="page" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="{% url 'busList' %}">Bus List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="{% url 'ticketStatus' %}">Ticket Status</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'busRoutes' %}">Bus Routes</a>
+            </li>
+{% endblock navItem %}
+{% block content %}
+
+<section>
+    <div class="container mt-3">
+      <div>
+            {% if messages %}
+              {% for message in messages %}
+                <p class="bg-success text-white p-1 fs-5">{{ message }}</p>
+              {% endfor %}
+            {% endif %}
+      </div>
+      {% if request.user.is_superuser %}
+      <div class="">
+        <a href="{% url 'addRoute' %}"> <button type="button" class="btn btn-success">Add Route +</button> </a>
+      </div>
+      {% endif %}
+    <table class="table mt-3">
+      <thead class="table-dark">
+        <tr>
+          <th>SN</th>
+          <th>Name</th>
+          {% if request.user.is_superuser %}
+          <th>Action</th>
+        {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for route in routes %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ route.name }}</td>          
+          {% if request.user.is_superuser %}
+              <td><a href="{% url 'editRoute' route.id %}">Edit</a> | 
+              <a href="{% url 'deleteRoute' route.id %}">Delete</a> 
+            {% endif %}
+  
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+    
+  </div>
+  </section>
+
+
+
+
+{% endblock %}

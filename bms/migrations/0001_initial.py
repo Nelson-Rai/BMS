@@ -20,20 +20,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
             ],
         ),
-        migrations.CreateModel(
-            name='Passenger',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('age', models.CharField(max_length=3)),
-                ('gender', models.CharField(max_length=10)),
-                ('updated', models.DateTimeField(auto_now=True)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-            ],
-            options={
-                'ordering': ['-updated', '-created'],
-            },
-        ),
+
         migrations.CreateModel(
             name='Vehicle',
             fields=[

@@ -16,8 +16,9 @@ urlpatterns = [
     path('editBus/<str:id>', views.editBus, name='editBus'),
     path('disableBus/<str:id>', views.disableBus, name='disableBus'),
     path('enableBus/<str:id>', views.enableBus, name='enableBus'),
-    
-
-    # path('passenger/confirm/<str:id>', views.confirmPassenger, name='confirmPassenger')
+    path('busRoutes', views.busRoutes, name='busRoutes'),
+    path('addRoute', views.addRoute, name='addRoute'),
+    path('editRoute/<str:id>', views.editRoute, name='editRoute'),
+    path('deleteRoute/<str:id>', views.deleteRoute, name='deleteRoute'),
 
 ]

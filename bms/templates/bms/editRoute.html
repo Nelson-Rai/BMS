@@ -1,0 +1,18 @@
+{% extends 'main.html' %} 
+{% block title %}
+Edit Route
+{% endblock %}
+{% block content %}
+<div class="container mt-3">
+    <form class="row g-3" method="post">
+      {% csrf_token %}
+        <div class="col-md-6">
+          <label for="routeName" class="form-label">Route Name</label>
+          <input type="text" class="form-control" name="routeName" placeholder="Location.." value="{{ route.name }}" required>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Edit Route</button>
+          </div>
+
+{% endblock content%}

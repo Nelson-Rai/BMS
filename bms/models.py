@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 
 class busRoute(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -35,7 +35,7 @@ class bookTicket(models.Model):
     vehicle_id = models.ForeignKey('Vehicle', on_delete=models.CASCADE, related_name='vehicleid')
     date = models.DateField(null=True)
     booked_ticket = models.IntegerField(default=0)
-    ticketNumber = models.IntegerField(default=0000)
+    ticketNumber = models.IntegerField(default=0000, unique=True)
     cost = models.IntegerField(null=True)
     ticket_status = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now=True)
@@ -50,7 +50,7 @@ class bookTicket(models.Model):
 
 class Vehicle(models.Model):
     name = models.CharField(max_length=50)
-    vehicle_number = models.CharField(max_length=15)
+    vehicle_number = models.CharField(max_length=15, unique=True)
     source = models.ForeignKey(busRoute, on_delete=models.CASCADE,default=1, related_name='sourceid')
     destination = models.ForeignKey(busRoute, on_delete=models.CASCADE,default=1, related_name='destinationid')
     date = models.DateField(null=True)

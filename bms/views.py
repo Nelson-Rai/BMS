@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Vehicle, busRoute, Passenger, bookTicket
+from .models import Vehicle, busRoute, bookTicket
 from django.db.models import Q
 from django.http import HttpResponseForbidden
 
@@ -32,6 +32,49 @@ def index(request):
             context["error"] = "No bus available."
             return render(request, 'bms/index.html', context)
     return render(request, 'bms/index.html', context)
+
+@login_required(login_url='loginUser')
+def busRoutes(request):
+    routes = busRoute.objects.all()
+    successMessages = messages.get_messages(request)
+    context = {'routes':routes, 'messages':successMessages}
+    return render(request, 'bms/busRoutes.html', context)
+
+@login_required(login_url='loginUser')
+def addRoute(request):
+    if request.method == 'POST' and request.user.is_superuser:
+        name = request.POST.get('routeName')
+        busRoute.objects.create(name=name) 
+
+        messages.success(request, 'New Route added Successfully')
+        return redirect('busRoutes')
+    elif not request.user.is_superuser:
+        return HttpResponseForbidden("You do not have permission to access this page.")
+    else:
+        return render(request, 'bms/addRoute.html')
+
+@login_required(login_url='loginUser')
+def editRoute(request, id):
+    route = busRoute.objects.get(id=id)
+    if request.user.is_superuser:
+        if request.method == 'POST' :
+            name = request.POST.get('routeName')
+            busRoute.objects.filter(id=id).update(name=name) 
+            messages.success(request, 'Route edited Successfully')
+            return redirect('busRoutes')
+        context = {
+                'route':route,
+                }
+        return render(request, 'bms/editRoute.html', context)
+    else:
+        return HttpResponseForbidden("You do not have permission to access this page.") 
+
+@login_required(login_url='loginUser')
+def deleteRoute(request, id):
+    route = get_object_or_404(busRoute, id=id)
+    route.delete()
+    messages.success(request, 'Route Deleted Successfully')
+    return redirect(busRoutes)
 
 
 @login_required(login_url='loginUser')
