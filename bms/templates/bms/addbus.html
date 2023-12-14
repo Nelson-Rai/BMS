@@ -53,15 +53,11 @@ Add Bus
                   <label for="Price" class="form-label">Price per ticket</label>
                   <input type="number" class="form-control" name="price" placeholder="500" required>
                 </div>
-                {% if form.errors %}
-                {% for field in form %}
-                    {% for error in field.errors %} 
-                       <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                       </div>
-                    {% endfor %}
+                {% if messages %}
+                {% for message in messages %}
+                  <p class="bg-danger text-white p-1 fs-5">{{ message }}</p>
                 {% endfor %}
-             {% endif %}
+              {% endif %}
         <div class="col-12">
           <button type="submit" class="btn btn-primary">Add Bus</button>
         </div>

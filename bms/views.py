@@ -6,7 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Vehicle, busRoute, bookTicket
 from django.db.models import Q
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseRedirect
+
 
 
 # Create your views here.
@@ -44,8 +45,12 @@ def busRoutes(request):
 def addRoute(request):
     if request.method == 'POST' and request.user.is_superuser:
         name = request.POST.get('routeName')
-        busRoute.objects.create(name=name) 
 
+        if busRoute.objects.filter(name=name).exists():
+            messages.error(request, "Bus route with this Name already exists..") 
+            return HttpResponseRedirect(request.path_info)
+            
+        busRoute.objects.create(name=name) 
         messages.success(request, 'New Route added Successfully')
         return redirect('busRoutes')
     elif not request.user.is_superuser:
@@ -59,9 +64,12 @@ def editRoute(request, id):
     if request.user.is_superuser:
         if request.method == 'POST' :
             name = request.POST.get('routeName')
+            if busRoute.objects.filter(name=name).exists():
+                messages.error(request, "Bus route with this Name already exists..") 
+                return HttpResponseRedirect(request.path_info)
             busRoute.objects.filter(id=id).update(name=name) 
             messages.success(request, 'Route edited Successfully')
-            return redirect('busRoutes')
+            return HttpResponseRedirect(request.path_info)
         context = {
                 'route':route,
                 }
@@ -107,6 +115,12 @@ def createBus(request):
         arrive = request.POST.get('Atime')
         available_seats = request.POST.get('seats')
         price = request.POST.get('price')
+        if Vehicle.objects.filter(name=name).exists():
+            messages.error(request, "Bus with this Name already exists..") 
+            return redirect('addBus')
+        elif Vehicle.objects.filter(vehicle_number=vehicle_number).exists():
+            messages.error(request, "Bus with this vehicle number already exists..") 
+            return redirect('addBus')
         Vehicle.objects.create(name=name, vehicle_number=vehicle_number, source=source, destination=destination, date=date, departure=departure, arrive=arrive, available_seats=available_seats, price=price) 
 
         messages.success(request, 'New Bus added Successfully')
@@ -134,6 +148,12 @@ def editBus(request, id):
             arrive = request.POST.get('Atime')
             available_seats = request.POST.get('seats')
             price = request.POST.get('price')
+            if Vehicle.objects.filter(name=name).exists():
+                messages.error(request, "Bus with this Name already exists..") 
+                return HttpResponseRedirect(request.path_info)
+            elif Vehicle.objects.filter(vehicle_number=vehicle_number).exists():
+                messages.error(request, "Bus with this vehicle number already exists..") 
+                return HttpResponseRedirect(request.path_info)
             Vehicle.objects.filter(id=id).update(name=name, vehicle_number=vehicle_number, source=source, destination=destination, date=date, departure=departure, arrive=arrive, available_seats=available_seats, price=price) 
 
             messages.success(request, 'Bus edited Successfully')
