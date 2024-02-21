@@ -14,7 +14,7 @@
   <div class="container row g-4 py-4">
     <div class="col-md-3">
       <label for="from" class="form-label">From</label> <br />
-      <select name="source" id="" class="form-select" required>
+      <select name="source" id="departure" class="form-select" required>
         <option value="" >Select Departure</option>
         {% for busRoute in busRoutes %}
         <option value="{{ busRoute.id }}">{{ busRoute }}</option>
@@ -28,7 +28,7 @@
     </div>
     <div class="col-md-3">
       <label for="to" class="form-label">To</label> <br />
-      <select name="destination" id="" class="form-select" required>
+      <select name="destination" id="destination" class="form-select" required>
         <option value="" >Select destination</option>
         {% for busRoute in busRoutes %}
           <option value="{{ busRoute.id }}">{{ busRoute }}</option>
@@ -37,7 +37,7 @@
     </div>
     <div class="col-md-3">
       <label for="date" class="form-label">Date</label>
-      <input type="date" class="form-control" id="" name="date" required/>
+      <input type="date" class="form-control" id="date" name="date" required/>
     </div>
   <div class="col-md-2">
       <br />
@@ -49,7 +49,7 @@
 <!-- bus list -->
 <div class="container-block">
 {% for vehicle_list in vehicles_list %}
-<form class="form-control px-4 py-2 " id="book_ticket_form" method="POST" action="{% url 'issueTicket' vehicle_list.id %}" onsubmit=" return confirmTicket()">
+<form class="form-control px-4 py-2 " id="book_ticket_form" method="POST" action="{% url 'issueTicket' vehicle_list.id %}" onsubmit=" return confirmTicket()" style="background-color: #f6e0e0">
   {% csrf_token %}
   
     <div class="row status">
@@ -108,5 +108,37 @@
     let confirmTicket = confirm("Do you want to issues " + ticket + " ticket/s?");
     return confirmTicket;
   }
+
+      
+
+    // Remember selected departure
+    document.getElementById('departure').addEventListener('change', function() {
+        localStorage.setItem('departure', this.value);
+    });
+    
+    const selectedDeparture = localStorage.getItem('departure');
+    if (selectedDeparture) {
+        document.getElementById('departure').value = selectedDeparture;
+    }
+
+  // Remember selected destination
+  document.getElementById('destination').addEventListener('change', function() {
+        localStorage.setItem('destination', this.value);
+    });
+    
+    const selectedDestination = localStorage.getItem('destination');
+    if (selectedDestination) {
+        document.getElementById('destination').value = selectedDestination;
+    }
+
+    // Remember selected date
+  document.getElementById('date').addEventListener('change', function() {
+        localStorage.setItem('date', this.value);
+    });
+    
+    const selectedDate = localStorage.getItem('date');
+    if (selectedDate) {
+        document.getElementById('date').value = selectedDate;
+    }
 </script>
 {% endblock content %}
