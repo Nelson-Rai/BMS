@@ -7,16 +7,16 @@ Login to BMS
 {% block content %}
 {% load static %}
 <section class="vh-100" style="background-color: #9a616d">
-  <div class="container py-5 h-100">
+  <div class="container py-2 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col col-xl-10">
         <div class="card" style="border-radius: 1rem">
           <div class="row g-0">
             <div class="col-md-6 col-lg-5 d-none d-md-block">
               <img
-                src="https://cdn.pixabay.com/photo/2017/04/23/15/53/london-2254133_1280.jpg"
-                alt="login form"
-                class="img-fluid"
+                src="{% static 'assets/bus.jpeg' %}"
+                alt="vintage bus picture of Nepal "
+                class="img-fluid h-100"
                 style="border-radius: 1rem 0 0 1rem"
               />
             </div>
@@ -26,15 +26,15 @@ Login to BMS
                 <form action="{% url 'loginUser' %}" method="post">
                   {% csrf_token %}
                   <div class="d-flex align-items-center mb-3 pb-1">
-                    <img src="{% static 'assets/logo.jpeg' %}" alt="logo" height="150px" width="150px"/>
-                  <span class="h1 fw-bold mb-0">BMS</span>
+                    <img src="{% static 'assets/logo.jpeg' %}" alt="logo" height="100px" width="150px" style="border-radius: 5px;"/>
+                  <span class="h1 fw-bold mx-4 px-4 text-white bg-dark ">BTRS</span>
                   </div>
 
-                  <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px">
+                  <h5 class="fw-normal  pb-2" style="letter-spacing: 1px">
                     Sign into your account
                   </h5>
 
-                  <div class="form-outline mb-4">
+                  <div class="form-outline mb-2">
                     <label class="form-label" for="username">Username</label>
                     <input
                       type="text"
@@ -44,7 +44,7 @@ Login to BMS
                     />
                   </div>
 
-                  <div class="form-outline mb-4">
+                  <div class="form-outline mb-2">
                     <label class="form-label" for="password">Password</label>
                     <input
                       type="password"
@@ -63,14 +63,14 @@ Login to BMS
                     {% endif %}
                     </p>
 
-                  <div class="pt-1 mb-4">
+                  <div class="pt-1 mb-2">
                     <button class="btn btn-dark btn-lg btn-block" type="submit">
                       Login
                     </button>
                   </div>
 
                   <a class="small text-muted" href="#!">Forgot password?</a>
-                  <p class="mb-5 pb-lg-2" style="color: #393f81">
+                  <p style="color: #393f81">
                     Don't have an account?
                     <a href="{% url 'register' %}" style="color: #393f81"
                       >Register here</a

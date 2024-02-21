@@ -7,6 +7,7 @@ from django.contrib import messages
 from .models import Vehicle, busRoute, bookTicket
 from django.db.models import Q
 from django.http import HttpResponseForbidden, HttpResponseRedirect
+from datetime import datetime, timedelta
 
 
 
@@ -23,10 +24,53 @@ def index(request):
         destination_r = request.POST.get('destination')
         date_r = request.POST.get('date')
         vehicles_list = Vehicle.objects.filter(source=source_r, destination=destination_r, date=date_r)
+
+
         request.session['date'] = date_r
         request.session.save()
 
         if vehicles_list:
+            time_differences = []
+            # instance1 = Vehicle.objects.get('departure')
+            # instance2 = Vehicle.objects.get('arrive')
+            if len(vehicles_list) > 1:
+                for i in range(len(vehicles_list)-1):
+                    start_time = datetime.strptime(str(vehicles_list[i].departure), '%H:%M:%S').time()
+                    end_time = datetime.strptime(str(vehicles_list[i].arrive), '%H:%M:%S').time()
+
+                    # Calculate the time difference
+                    time_difference = timedelta(
+                        hours=end_time.hour - start_time.hour, 
+                        minutes=end_time.minute - start_time.minute,
+                        seconds=end_time.second - start_time.second
+                        )
+
+                    # Display the time difference
+                    hours, remainder = divmod(time_difference.seconds, 3600)
+                    minutes, seconds = divmod(remainder, 60)
+                    time_difference_formatted = "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
+                    time_differences.append(time_difference_formatted)
+
+            else :
+                for i in range(len(vehicles_list)):
+                    start_time = datetime.strptime(str(vehicles_list[i].departure), '%H:%M:%S').time()
+                    end_time = datetime.strptime(str(vehicles_list[i].arrive), '%H:%M:%S').time()
+
+                    # Calculate the time difference
+                    time_difference = timedelta(
+                        hours=end_time.hour - start_time.hour, 
+                        minutes=end_time.minute - start_time.minute,
+                        seconds=end_time.second - start_time.second
+                        )
+
+                    # Display the time difference
+                    hours, remainder = divmod(time_difference.seconds, 3600)
+                    minutes, seconds = divmod(remainder, 60)
+                    time_difference_formatted = "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
+                    time_differences.append(time_difference_formatted)
+            
+
+            context = {'time_differences': time_differences}
             # context={'vehicles_list':vehicles_list}
             return render(request, 'bms/index.html', locals())
         else:
@@ -148,12 +192,6 @@ def editBus(request, id):
             arrive = request.POST.get('Atime')
             available_seats = request.POST.get('seats')
             price = request.POST.get('price')
-            if Vehicle.objects.filter(name=name).exists():
-                messages.error(request, "Bus with this Name already exists..") 
-                return HttpResponseRedirect(request.path_info)
-            elif Vehicle.objects.filter(vehicle_number=vehicle_number).exists():
-                messages.error(request, "Bus with this vehicle number already exists..") 
-                return HttpResponseRedirect(request.path_info)
             Vehicle.objects.filter(id=id).update(name=name, vehicle_number=vehicle_number, source=source, destination=destination, date=date, departure=departure, arrive=arrive, available_seats=available_seats, price=price) 
 
             messages.success(request, 'Bus edited Successfully')

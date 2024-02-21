@@ -18,9 +18,9 @@
 {% endblock navItem %}
 {% block content %}
 <section>
-  <div class="container">
-    <table class="table mt-3">
-      <thead class="table-dark">
+  <div class="container mt-3 px-1 py-4 bg-light">
+    <table class="table ">
+      <thead class="table-dark fs-5">
         <tr>
           <th>Vehicle</th>
           <th>Booked Ticket</th>
@@ -33,13 +33,13 @@
       {% for ticket in tickets %}
       {% if request.user.is_authenticated%}
       {% if ticket.ticket_status == True  and user %}      
-        <tbody>
+        <tbody class="fs-7">
             <td>{{ ticket.vehicle_id }} </td>
             <td>{{ ticket.booked_ticket }}</td>
             <td>{{ ticket.date }}</td>
             <td>{{ ticket.ticketNumber }}</td>
             <td>{{ ticket.cost }}</td>
-            <td><a href="{% url 'cancelTicket' ticket.id%}"><button class="btn-warning">Cancel</button></a> | 
+            <td><a href="{% url 'cancelTicket' ticket.id%}"><button type="button" class="btn-warning">Cancel</button></a> | 
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#printTicket" >
                  Print </button>
                   </td> 
@@ -83,7 +83,7 @@
 
         </tbody>
         {% else %}
-          <tbody>
+          <tbody style="color: red;" class="fw-bold">
             <td>{{ ticket.vehicle_id }} </td>
             <td>{{ ticket.booked_ticket }}</td>
             <td>{{ ticket.date }}</td>
@@ -106,9 +106,9 @@
       document.body.innerHTML = printTicket;
       window.print();
 
-      // Restore the original content
       document.body.innerHTML = originalBody;
-      
+
+
   }
 
 </script>

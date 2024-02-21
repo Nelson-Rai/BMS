@@ -19,7 +19,7 @@ Bus List
 
 {% block content %} 
 <section>
-  <div class="container mt-3">
+  <div class="container mt-3 bg-light py-4 px-1">
     <div>
           {% if messages %}
             {% for message in messages %}
@@ -29,7 +29,7 @@ Bus List
     </div>
     {% if request.user.is_superuser %}
     <div class="">
-      <a href="{% url 'addBus' %}"> <button type="button" class="btn btn-success">Add Bus +</button> </a>
+      <a href="{% url 'addBus' %}"> <button type="button" class="btn btn-success mx-3">Add Bus +</button> </a>
     </div>
     {% endif %}
   <table class="table mt-3">

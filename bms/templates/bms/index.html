@@ -1,13 +1,20 @@
 {% extends 'main.html' %} {% block content %}
-
+<style>
+  body {
+    background-image: url("/static/assets/bus_bg2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position:top;
+   }
+</style>
 <!-- form -->
 <form class="form-control" action="{% url 'home' %}" method="POST">
   {% csrf_token %}
   
-  <div class="container row g-4">
+  <div class="container row g-4 py-4">
     <div class="col-md-3">
       <label for="from" class="form-label">From</label> <br />
-      <select name="source" id="" class="form-select">
+      <select name="source" id="" class="form-select" required>
         <option value="" >Select Departure</option>
         {% for busRoute in busRoutes %}
         <option value="{{ busRoute.id }}">{{ busRoute }}</option>
@@ -21,7 +28,7 @@
     </div>
     <div class="col-md-3">
       <label for="to" class="form-label">To</label> <br />
-      <select name="destination" id="" class="form-select">
+      <select name="destination" id="" class="form-select" required>
         <option value="" >Select destination</option>
         {% for busRoute in busRoutes %}
           <option value="{{ busRoute.id }}">{{ busRoute }}</option>
@@ -30,7 +37,7 @@
     </div>
     <div class="col-md-3">
       <label for="date" class="form-label">Date</label>
-      <input type="date" class="form-control" id="" name="date" />
+      <input type="date" class="form-control" id="" name="date" required/>
     </div>
   <div class="col-md-2">
       <br />
@@ -40,9 +47,9 @@
 </form>
 
 <!-- bus list -->
-<div class="container">
+<div class="container-block">
 {% for vehicle_list in vehicles_list %}
-<form class="form-control" id="book_ticket_form" method="POST" action="{% url 'issueTicket' vehicle_list.id %}" onsubmit=" return confirmTicket()">
+<form class="form-control px-4 py-2 " id="book_ticket_form" method="POST" action="{% url 'issueTicket' vehicle_list.id %}" onsubmit=" return confirmTicket()">
   {% csrf_token %}
   
     <div class="row status">
@@ -55,7 +62,11 @@
         Departure <b>{{ vehicle_list.departure }}</b> | {{ vehicle_list.source }} | {{vehicle_list.date}}
       </div>
 
-      <div class="col">Duration <b>3:5 hrs</b></div>
+      <div class="col">Duration 
+        <b>{% for time_difference in time_differences %}
+        {{ time_difference }}
+          {% endfor %}
+        </b></div>
       <div class="col">
         Arrival <b>{{ vehicle_list.arrival }}</b> | {{ vehicle_list.destination }} | <b>{{vehicle_list.arrive}}</b>
       </div>
@@ -79,8 +90,10 @@
     <span class="price">NPR {{ vehicle_list.price }}</span>
     {% endif %}
     <hr>
-    {% endfor %} {{ error }}
-    
+    {% endfor %} 
+    {% if error %}
+    <p class="text-white btn-danger px-4 py-2 fs-4">{{ error }}</p>
+    {% endif %}
   </div>
   
 </form>

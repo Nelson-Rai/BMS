@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %} Bus Management System {% endblock %}</title>
 
-    <link rel="stylesheet" href="style.css" />
+    <!-- <link rel="stylesheet" href="style.css" /> -->
     <link
       rel="stylesheet"
       href="path/to/font-awesome/css/font-awesome.min.css"
@@ -27,7 +27,7 @@
       crossorigin="anonymous"
     />
   </head>
-  <body>
+  <body style="background-color: #a5f5eb;">
     {% load static %}
     {% block navbar %}  
     <!-- navbar -->
@@ -35,7 +35,7 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
           <img src="{% static 'assets/logo.jpeg' %}" alt="logo" height="35px" width="35px"/>
-          BMS
+          <b >BTRS</b>
         </a>
         <button
           class="navbar-toggler"
