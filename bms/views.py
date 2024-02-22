@@ -223,11 +223,6 @@ def enableBus(request, id):
         return HttpResponseForbidden("You do not have permission to access this page.")
 
 @login_required(login_url='loginUser')
-def payment(request):
-    
-    return render(request, 'bms/payment.html') 
-
-@login_required(login_url='loginUser')
 def issueTicket(request, id):
     vehicle = Vehicle.objects.get(id=id)
     ticketNum = bookTicket.objects.latest('ticketNumber')

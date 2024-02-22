@@ -6,9 +6,11 @@
     background-repeat: no-repeat;
     background-position:top;
    }
+    .rounded{border-radius: 1rem}.nav-pills .nav-link{color: #555}.nav-pills .nav-link.active{color: white}input[type="radio"]{margin-right: 5px}.bold{font-weight:bold}
+
 </style>
 <!-- form -->
-<form class="form-control" action="{% url 'home' %}" method="POST">
+<form class="form-control" id="bookTkt" action="{% url 'home' %}" method="POST">
   {% csrf_token %}
   
   <div class="container row g-4 py-4">
@@ -47,9 +49,8 @@
 </form>
 
 <!-- bus list -->
-<div class="container-block">
 {% for vehicle_list in vehicles_list %}
-<form class="form-control px-4 py-2 " id="book_ticket_form" method="POST" action="{% url 'issueTicket' vehicle_list.id %}" onsubmit=" return confirmTicket()" style="background-color: #f6e0e0">
+<form class="form-control px-4 py-2 " id="book_ticket_form{{ vehicle_list.id }}" method="POST" action="{% url 'issueTicket' vehicle_list.id %}" style="background-color: #ffffffe4">
   {% csrf_token %}
   
     <div class="row status">
@@ -77,41 +78,176 @@
         Bus Cancelled
         {% else %}
         Available : <b> {{ vehicle_list.available_seats}} seats </b> <br>
-        Book Ticket : <input type="number" id="book_ticket" name="book_ticket" required>
+        Book Ticket : <input type="number" id="book_ticket{{ vehicle_list.id }}" name="book_ticket" class="book_ticket_input" required>
         {% endif %}
       </div>
     </div>
     
     {% if vehicle_list.v_status == False %}
-    <button type="submit" class="btn btn-danger disabled my-2">Book Now</button>
+    <button type="submit" class="btn btn-danger disabled text-decoration-line-through my-2">Book Now</button>
     <span class="price text-decoration-line-through">NPR {{ vehicle_list.price }}</span>
       {% else %}
-    <button type="submit" class="btn btn-warning my-2">Book Now</button>
+      <button type="button" class="btn btn-warning mt-2 toggle-modal-btn" id="confirmTicket{{ vehicle_list.id }}" data-target="#myModal{{ vehicle_list.id }}" data-price="{{ vehicle_list.price }}" data-seats="{{ vehicle_list.available_seats }}">
+        Book Now </button>
     <span class="price">NPR {{ vehicle_list.price }}</span>
     {% endif %}
     <hr>
-    {% endfor %} 
     {% if error %}
     <p class="text-white btn-danger px-4 py-2 fs-4">{{ error }}</p>
     {% endif %}
   </div>
   
-</form>
+<!-- Modal  -->
+<div class="modal fade" id="myModal{{ vehicle_list.id }}" tabindex="-1" aria-hidden="true" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="">Confirm Ticket</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="ticket" id="ticket-details">
+            <div class="bname"><b> {{ vehicle_list.name }} </b>| <b> ({{ vehicle_list.vehicle_number }})</b></div>
+             <div class=" schedule">
+              <div class="col">Departure <b>{{ vehicle_list.departure }}</b> |<b> {{ vehicle_list.source }} </b> |<b> {{vehicle_list.date}}</b> </div>
 
+              <div class="col">Duration <b>
+                {% for time_difference in time_differences %}
+                {{ time_difference }}
+                  {% endfor %}
+                </b></div>
+
+              <div class="col">Arrival   <b>{{ vehicle_list.destination }}</b> | <b>{{vehicle_list.arrive}}</b></div>
+            </div>
+
+            <div class="row">
+                <h4 id="bookedTickets{{ vehicle_list.id }}"> </h4>
+                <h5 id="totalCost{{ vehicle_list.id }}"></h5> 
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+          <div class="row">
+                    <div class="card-header">
+                        <div class="bg-white ">
+                            <!-- Credit card form tabs -->
+                            <ul role="tablist" class="nav bg-light nav-pills rounded nav-fill mb-1">
+                                {% load static %}
+                                <li class="nav-item"> <a data-toggle="pill" href="#credit-card{{ vehicle_list.id }}" class="nav-link active "> <i class="fas fa-credit-card mr-2"></i> Credit Card </a> </li>
+                                <li class="nav-item"> <a data-toggle="pill" href="#esewa{{ vehicle_list.id }}" class="nav-link "> <img src="{% static 'assets/esewa.png' %}" alt="" height="28px" width="55px"></a> </li>
+                                <li class="nav-item"> <a data-toggle="pill" href="#imepay{{ vehicle_list.id }}" class="nav-link "> <img src="{% static 'assets/imepay.png' %}" alt="" height="24px" width="24px"> ImePay </a> </li>
+                            </ul>
+                        </div> <!-- End -->
+                        <!-- Credit card form content -->
+                        <div class="tab-content">
+                            <!-- credit card info-->
+                            <div id="credit-card{{ vehicle_list.id }}" class="tab-pane fade show active pt-3">
+                                <form role="form">
+                                    <div class="form-group"> <label for="username">
+                                            <h6>Card Owner</h6>
+                                        </label> <input type="text" name="username" placeholder="Card Owner Name" required class="form-control "> </div>
+                                    <div class="form-group"> <label for="cardNumber">
+                                            <h6>Card number</h6>
+                                        </label>
+                                        <div class="input-group"> <input type="text" name="cardNumber" placeholder="Valid card number" class="form-control " required>
+                                            <div class="input-group-append"> <span class="input-group-text text-muted"> <i class="fab fa-cc-visa mx-1"></i> <i class="fab fa-cc-mastercard mx-1"></i> <i class="fab fa-cc-amex mx-1"></i> </span> </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <div class="form-group"> <label><span class="hidden-xs">
+                                                        <h6>Expiration Date</h6>
+                                                    </span></label>
+                                                <div class="input-group"> <input type="number" placeholder="MM" name="" class="form-control" required> <input type="number" placeholder="YY" name="" class="form-control" required> </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group mb-4"> <label data-toggle="tooltip" title="Three digit CV code on the back of your card">
+                                                    <h6>CVV <i class="fa fa-question-circle d-inline"></i></h6>
+                                                </label> <input type="text" required class="form-control"> </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="card-footer">
+                                  <button type="button" class="subscribe btn btn-success btn-block shadow-sm submitMainForm" > Confirm Payment </button>
+                                </div>
+                        </div> <!-- End -->
+                        <!-- esewa info -->
+                        <div id="esewa{{ vehicle_list.id }}" class="tab-pane fade pt-3">
+                             <button type="submit" class="btn btn-success submitMainForm" > Make Payment </button> 
+                            <p class="text-muted"> Note: After clicking on the button, you will be directed to a secure gateway for payment. After completing the payment process, you will be redirected back to the website to view details of your order. </p>
+                        </div> <!-- End -->
+                        <!-- imepay info -->
+                        <div id="imepay{{ vehicle_list.id }}" class="tab-pane fade pt-3">
+                             <button type="submit" class="btn btn-success submitMainForm" > Make Payment </button>
+                            <p class="text-muted"> Note: After clicking on the button, you will be directed to a secure gateway for payment. After completing the payment process, you will be redirected back to the website to view details of your order. </p>
+                        </div> <!-- End -->
+                        
+                        <!-- End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+{% endfor %} 
 
 
 
 
 <script>
-  function confirmTicket(){
-    let ticket = document.getElementById('book_ticket').value;
-    let confirmTicket = confirm("Do you want to issues " + ticket + " ticket/s?");
-    return confirmTicket;
-  }
+     // form validation before toggle of modal
+  $(document).ready(function () {
+    $('.toggle-modal-btn').click(function () {
+        var target = $(this).data('target');
+        var vehicleId = $(this).attr('id').replace('confirmTicket', '');
+        var ticketInput = $('#book_ticket' + vehicleId);
+        var bookedTickets = ticketInput.val();
+        var pricePerTicket = $(this).data('price');
+        var totalCost = bookedTickets * pricePerTicket;
+        var seats = $(this).data('seats');
 
+
+
+        $('#bookedTickets' + vehicleId).text(bookedTickets + " ticket/s booked.");
+      $('#totalCost' + vehicleId).text("Total Cost = NPR " + totalCost);
       
+        if (validateForm(ticketInput, seats)) {
+          $(target).modal('show');
+        }
+        $('.submitMainForm').click(function() {
+      // Submit the main form
+      $(this).closest('form').submit();
+    });
+    });
+  });
+  // $(document).ready(function() {
+  //   // When the button to submit the main form within the modal is clicked
 
-    // Remember selected departure
+  // });
+
+  function validateForm(ticketInput, seats) {
+    var ticket = ticketInput.val();
+    // var available = availableSeats.val();
+
+    if (ticket.trim() === '' || ticket.trim() <= 0) {
+      alert('Please select at least 1 ticket.');
+      return false;
+    } else if ( ticket.trim()>seats) {
+      alert('Cannot book more than available seats.')
+      return false;
+    } else if ( seats<=0) {
+      alert('No seat available')
+      return false;
+    }else{
+      return true;
+    }
+  }
+     // Remember selected departure
     document.getElementById('departure').addEventListener('change', function() {
         localStorage.setItem('departure', this.value);
     });
@@ -140,5 +276,15 @@
     if (selectedDate) {
         document.getElementById('date').value = selectedDate;
     }
+
+    //script for payment gateway
+    $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+    
+            $('.nav-pills a').on('click', function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            })
+        });
 </script>
 {% endblock content %}
