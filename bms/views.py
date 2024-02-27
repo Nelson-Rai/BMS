@@ -273,10 +273,17 @@ def ticketStatus(request):
 @login_required(login_url='loginUser')
 def cancelTicket(request, id):
     user = request.user
-    if request.user: 
-        bookTicket.objects.filter(id=id, user=user).update(ticket_status=False)
+    if user: 
+        ticket = bookTicket.objects.get(id=id, user=user)
+        vehicle = ticket.vehicle_id
+        seats = vehicle.available_seats
+        cancel = ticket.booked_ticket
+        vehicle.available_seats = seats + cancel
+        vehicle.save()
+        ticket.ticket_status=False
+        ticket.save()
         return redirect('ticketStatus')
-    return HttpResponse("Ticket doesnot exist")
+    return HttpResponse("You are not authorized.")
 
 def loginUser(request):
     if request.user.is_authenticated:

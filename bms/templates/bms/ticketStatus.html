@@ -39,7 +39,7 @@
             <td>{{ ticket.date }}</td>
             <td>{{ ticket.ticketNumber }}</td>
             <td>{{ ticket.cost }}</td>
-            <td><a href="{% url 'cancelTicket' ticket.id%}"><button type="button" class="btn-warning">Cancel</button></a> | 
+            <td><a href="#"><button type="button" class="btn-warning" onclick="confirmCancel(event)" data-cancelurl = "{% url 'cancelTicket' ticket.id%}" >Cancel</button></a> | 
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#printTicket" >
                  Print </button>
                   </td> 
@@ -107,9 +107,16 @@
       window.print();
 
       document.body.innerHTML = originalBody;
-
-
   }
+    
+  function confirmCancel(event){
+    event.preventDefault();
+    var cancelurl = event.target.getAttribute('data-cancelurl');
+    
+    if (confirm("Do you want to cancel this ticket?")){
+      window.location.href = cancelurl;
+  }
+}
 
 </script>
 
