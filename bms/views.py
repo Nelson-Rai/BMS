@@ -271,6 +271,24 @@ def ticketStatus(request):
     return render(request, 'bms/ticketStatus.html',context)
 
 @login_required(login_url='loginUser')
+def searchTicket(request):
+    user = request.user
+    ticket = int(request.GET.get('search'))
+    if ticket:
+        if user:
+            tickets = bookTicket.objects.filter(user=user, ticketNumber=ticket)
+            if not tickets:
+                messages.error(request, '!!! Ticket Not Found !!!')           
+        else:
+            tickets = bookTicket.objects.none()
+
+    context = {
+                'tickets':tickets,
+                'user':user,
+            }
+    return render(request, 'bms/ticketStatus.html',context)
+
+@login_required(login_url='loginUser')
 def cancelTicket(request, id):
     user = request.user
     if user: 

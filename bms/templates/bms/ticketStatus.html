@@ -19,6 +19,11 @@
 {% block content %}
 <section>
   <div class="container mt-3 px-1 py-4 bg-light">
+    <form class="d-flex m-2 col-md-3" role="search" action="{% url 'searchTicket' %}">
+      <input class="form-control me-2" name="search" placeholder="Enter Ticket Number..." aria-label="Search" required>
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+
     <table class="table ">
       <thead class="table-dark fs-5">
         <tr>
@@ -30,10 +35,18 @@
           <th>Action</th>
         </tr>
       </thead>
-      {% for ticket in tickets %}
-      {% if request.user.is_authenticated%}
-      {% if ticket.ticket_status == True  and user %}      
+      {% if messages %}
+      <p>
+            {% for message in messages %}
+            <span class=" text-danger fw-bold p-1 fs-5">{{ message }}</span>
+            {% endfor %}
+        {% endif %}
+        </p>
+     
         <tbody class="fs-7">
+          {% for ticket in tickets %}
+          {% if request.user.is_authenticated%}
+          {% if ticket.ticket_status == True  and user %} 
             <td>{{ ticket.vehicle_id }} </td>
             <td>{{ ticket.booked_ticket }}</td>
             <td>{{ ticket.date }}</td>
@@ -43,7 +56,7 @@
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#printTicket" >
                  Print </button>
                   </td> 
-          
+                  
                  <!-- Modal  -->
             <div class="modal fade" id="printTicket" tabindex="-1" aria-hidden="true">
               <div class="modal-dialog">
